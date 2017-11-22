@@ -36,27 +36,43 @@
             @endif
         </div>
 
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
             <label for="role">Role:</label>
-            <select name="role" id="role" required>
+            <select name="role_id" id="role_id" required>
                 <option>Choose Option</option>
                 @foreach($roles as $key=>$value)
                 <option value="{{$key}}">{{$value}}</option>
                 @endforeach
             </select>
+            @if ($errors->has('role_id'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('role_id') }}</strong>
+                </span>
+            @endif
         </div>
-        <div class="form-group">
+        <div class="form-group{{ $errors->has('is_active') ? ' has-error' : '' }}">
             <label for="status">Role:</label>
             <select name="is_active" id="">
                 <option value="1">Active</option>
                 <option value="0" selected>Not Active</option>
             </select>
+            @if ($errors->has('is_active'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('is_active') }}</strong>
+                </span>
+            @endif
         </div>
 
-        <div class="form-group">
-            <input type="file" id="photo" name="photo">
+        <div class="form-group{{ $errors->has('photo_id') ? ' has-error' : '' }}">
+            <input type="file" id="photo_id" name="photo_id">
             <p class="help-block">Upload your profile picture.</p>
+            @if ($errors->has('is_active'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('photo_id') }}</strong>
+                </span>
+            @endif
         </div>
+
         <button type="submit" class="btn btn-default" name="submit">Submit</button>
     </form>
     @endsection
