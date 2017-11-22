@@ -1,13 +1,38 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Helllo Sandesh</h1>
-</body>
-</html>
+@extends('layouts.admin');
+
+
+@section('content')
+
+
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+        </tr>
+        <tbody>
+        @if($users)
+            @foreach($users as $user)
+
+        <tr>
+            <td>{{$user->id}}</td>
+            <td>{{$user->name}}</td>
+            <td>{{$user->email}}</td>
+            <td>{{($user->is_active)==1?'Active':'Not Active'}}</td>
+            <td>{{$user->role->name}}</td>
+            <td>{{$user->created_at->diffForHumans()}}</td>
+            <td>{{$user->updated_at->diffForHumans()}}</td>
+
+        </tr>
+        @endforeach
+            @endif
+        </tbody>
+    </table>
+
+
+
+@endsection

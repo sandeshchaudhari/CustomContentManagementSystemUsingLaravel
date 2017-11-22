@@ -23,13 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/admin/users','AdminUsersController');
 
-//Route::get('/admin/users',function (){
-//   return view('admin.users.index');
-//});
 
-Route::get('/test',function(){
-    return User::find(1)->role->name;
-});
-Route::get('/admin',function(){
-   return view('admin.index');
-});
+//Route::post('/admin/users','AdminUsersController@store');
+
+//Route::get('/admin/users/create','AdminUsersController@create');
