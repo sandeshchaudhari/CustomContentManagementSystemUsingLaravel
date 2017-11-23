@@ -28,3 +28,4 @@ Route::get('/admin/users/{id}/edit','AdminUsersController@edit');
 //Route::post('/admin/users','AdminUsersController@store');
 
 //Route::get('/admin/users/create','AdminUsersController@create');
+Route::resource('/admin/posts','AdminPostsController');
