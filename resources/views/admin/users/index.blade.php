@@ -4,7 +4,7 @@
 @section('content')
     @if(\Illuminate\Support\Facades\Session::has('deleted_user'))
 
-    <p class="bg-success">{{session('deleted_user')}}</p>
+    <p class="bg-success s">{{session('deleted_user')}}</p>
 
     @endif
 
