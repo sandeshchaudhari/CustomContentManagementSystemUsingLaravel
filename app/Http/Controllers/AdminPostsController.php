@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostCreateRequest;
+use App\Photo;
+use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminPostsController extends Controller
 {
@@ -13,7 +17,8 @@ class AdminPostsController extends Controller
      */
     public function index()
     {
-        return view('admin.posts.index');
+        $posts=Post::all();
+        return view('admin.posts.index',compact('posts'));
     }
 
     /**
@@ -23,7 +28,8 @@ class AdminPostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $user=Auth::user();
+        return view('admin.posts.create',compact('user'));
     }
 
     /**
@@ -32,9 +38,28 @@ class AdminPostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostCreateRequest $request)
     {
-        //
+        //return $request->all();
+        $input=$request->all();
+        $user=Auth::user();
+        if($file=$request->file('photo_id')){
+            $name=$file->getClientOriginalName();
+            $file->move('images',$name);
+            $photo=Photo::create(['file_name'=>$name]);
+            $input['photo_id']=$photo->id;
+        }
+        $post1=$user->posts();
+        $post=new Post();
+        $post->title=$input['title'];
+        $post->body=$input['body'];
+        //$post->user_id=$input['user_id'];
+        $post->category_id=$input['category_id'];
+        $post->photo_id=$input['photo_id'];
+        $post1->save($post);
+        //dd($input);
+       // Post::create([$input]);
+        return redirect('/admin/posts');
     }
 
     /**
