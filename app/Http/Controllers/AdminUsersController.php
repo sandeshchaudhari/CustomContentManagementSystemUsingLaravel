@@ -19,8 +19,8 @@ class AdminUsersController extends Controller
      */
     public function index()
     {
-        $users=User::all();
-        return view('admin.users.index',compact('users'));
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
     }
 
     /**
@@ -30,40 +30,40 @@ class AdminUsersController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name','id')->all();
-      // dd($roles);
-       return view('admin.users.create',compact('roles'));
+        $roles = Role::pluck('name', 'id')->all();
+        // dd($roles);
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(UsersRequest $request)
     {
 
-        $input=$request->all();
+        $input = $request->all();
 
 
-        if($file=$request->file('photo_id')){
-            $name=$file->getClientOriginalName();
-            $file->move('images',$name);
-            $photo=Photo::create(['file_name'=>$name]);
-            $input['photo_id']=$photo->id;
+        if ($file = $request->file('photo_id')) {
+            $name = $file->getClientOriginalName();
+            $file->move('images', $name);
+            $photo = Photo::create(['file_name' => $name]);
+            $input['photo_id'] = $photo->id;
             //$user->file_name=$name;
         }
-            $input['password']=bcrypt($request->password);
-            User::create($input);
-            return redirect('/admin/users');
+        $input['password'] = bcrypt($request->password);
+        User::create($input);
+        return redirect('/admin/users');
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -74,38 +74,43 @@ class AdminUsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $roles = Role::pluck('name','id')->all();
-        $user=User::find($id);
-        return view('admin.users.edit',compact('user','roles'));
+        $roles = Role::pluck('name', 'id')->all();
+        $user = User::find($id);
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(UsersRequest $request, $id)
     {
-        $input=$request->all();
-        $user=User::findOrFail($id);
-        if($file=$request->file('photo_id')){
-            $name=$file->getClientOriginalName();
-            $file->move('images',$name);
 
-            $photo=Photo::findOrFail($user->photo_id);
-            $photo->update(['file_name'=>$name]);
-            //$photo=Photo::create(['file_name'=>$name]);
-            $input['photo_id']=$photo->id;
+        if (trim($request->password) == '') {
+            $input = $request->except('password');
+        } else {
+            $input = $request->all();
+            $input['password'] = bcrypt($request->password);
         }
-        $input['password']=bcrypt($request->password);
-        $user=User::findOrFail($id);
+        $user = User::findOrFail($id);
+        if ($file = $request->file('photo_id')) {
+            $name = $file->getClientOriginalName();
+            $file->move('images', $name);
+
+            $photo = Photo::findOrFail($user->photo_id);
+            $photo->update(['file_name' => $name]);
+            //$photo=Photo::create(['file_name'=>$name]);
+            $input['photo_id'] = $photo->id;
+        }
+        $user = User::findOrFail($id);
         $user->update($input);
         return redirect('/admin/users');
 
@@ -114,15 +119,15 @@ class AdminUsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        Session::flash('deleted_user','User has been deleted successfully');
-        $user=User::findOrFail($id);
-        unlink(public_path().'/images/'.$user->photo->file_name);
-        $user->delete();
-        return redirect('/admin/users');
+        Session::flash('deleted_user', 'User has been deleted successfully');
+        $user = User::findOrFail($id);
+        if (file_exists(public_path() . '/images/' . $user->photo->file_name)) {
+            unlink(public_path() . '/images/' . $user->photo->file_name);
+        }
     }
 }

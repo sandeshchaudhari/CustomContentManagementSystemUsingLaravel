@@ -2,15 +2,14 @@
 
 @section('content')
 
-    <h1>Edit Category</h1>
+    <h1>Create Category</h1>
 
 
-    <form method="POST" action="/admin/categories/{{$category->id}}">
+    <form method="POST" action="/admin/categories">
         {{csrf_field()}}
-        <input type="hidden" name="_method" value="PATCH">
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
             <label for="name">Title:</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{$category->name}}" placeholder="Enter post title">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter post title">
             @if ($errors->has('name'))
                 <span class="help-block">
                          <strong>{{ $errors->first('name') }}</strong>

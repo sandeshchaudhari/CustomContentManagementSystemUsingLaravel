@@ -21,11 +21,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/admin/users','AdminUsersController');
-Route::get('/admin/users/create','AdminUsersController@create')->name('admin.users.create');
+Route::group(['middleware'=>['admin']],function (){
 
-Route::get('/admin/users/{id}/edit','AdminUsersController@edit');
-//Route::post('/admin/users','AdminUsersController@store');
+    Route::resource('/admin/users','AdminUsersController');
 
-//Route::get('/admin/users/create','AdminUsersController@create');
+});
+
 Route::resource('/admin/posts','AdminPostsController');
+
+Route::resource('/admin/categories','AdminCategoriesController');

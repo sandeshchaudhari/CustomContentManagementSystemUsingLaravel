@@ -33,7 +33,7 @@ class User extends Authenticatable
         return $this->belongsTo('App\Photo');
     }
     public function isAdmin(){
-        if($this->role->name='admin'){
+        if($this->role->name=='admin'){
             return true;
         }else{
             return false;
@@ -42,4 +42,5 @@ class User extends Authenticatable
     public function posts(){
         return $this->hasMany('App\Post');
     }
+
 }

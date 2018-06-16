@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\PostCreateRequest;
 use App\Photo;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AdminPostsController extends Controller
 {
@@ -29,7 +31,8 @@ class AdminPostsController extends Controller
     public function create()
     {
         $user=Auth::user();
-        return view('admin.posts.create',compact('user'));
+        $categories=Category::pluck('name','id')->all();
+        return view('admin.posts.create',compact('user','categories'));
     }
 
     /**
@@ -81,7 +84,10 @@ class AdminPostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post=Post::find($id);
+        $user=$post->user()->first();
+        $categories=Category::pluck('name','id')->all();
+        return view('admin.posts.edit',compact('post','user','categories'));
     }
 
     /**
@@ -93,7 +99,20 @@ class AdminPostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post=Post::findOrFail($id);
+        $input=$request->all();
+        $input['user_id']=$post->user_id;
+        if($file=$request->file('photo_id')){
+            $name=$file->getClientOriginalName();
+            $file->move('images',$name);
+            $photo=Photo::find($post->photo_id);
+            $photo_id=$photo->update(['file_name'=>$name]);
+            $input['photo_id']=$photo->id;
+        }
+        $post->update($input);
+
+        return redirect('admin/posts');
+
     }
 
     /**
@@ -104,6 +123,13 @@ class AdminPostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Session::flash('deleted_post','User has been deleted successfully');
+        $post=Post::findOrFail($id);
+        if(file_exists(public_path().'/images/'.$post->photo->file_name)){
+            unlink(public_path().'/images/'.$post->photo->file_name);
+        }
+
+        $post->delete();
+        return redirect('/admin/posts');
     }
 }

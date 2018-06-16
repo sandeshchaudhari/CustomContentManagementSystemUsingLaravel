@@ -33,11 +33,9 @@
                  <label for="category_id">category:</label>
                  <select name="category_id" id="category_id" class="form-control" required>
                      <option>Choose Option</option>
-                     <option value="1">Category one</option>
-                     <option value="2">Category two</option>
-                     {{--@foreach($categorys as $key=>$value)--}}
-                     {{--<option value="{{$key}}">{{$value}}</option>--}}
-                     {{--@endforeach--}}
+                     @foreach($categories as $key=>$value)
+                     <option value="{{$key}}">{{$value}}</option>
+                     @endforeach
                  </select>
                  @if ($errors->has('category_id'))
                      <span class="help-block">

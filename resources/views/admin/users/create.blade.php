@@ -66,7 +66,7 @@
         <div class="form-group{{ $errors->has('photo_id') ? ' has-error' : '' }}">
             <input type="file" id="photo_id" name="photo_id">
             <p class="help-block">Upload your profile picture.</p>
-            @if ($errors->has('is_active'))
+            @if ($errors->has('photo_id'))
                 <span class="help-block">
                     <strong>{{ $errors->first('photo_id') }}</strong>
                 </span>

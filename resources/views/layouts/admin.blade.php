@@ -56,7 +56,7 @@
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> User Name<i class="fa fa-caret-down">
+                    <i class="fa fa-user fa-fw"></i>{{Auth()->user()->name}}<i class="fa fa-caret-down">
 
 
 
@@ -68,7 +68,7 @@
                     <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href=""><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="/login"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -133,7 +133,7 @@
                             </li>
 
                             <li>
-                                <a href="{{route('admin.users.create')}}">Create User</a>
+                                <a href="{{route('users.create')}}">Create User</a>
                             </li>
                             <li>
                                 <a href="{{route('users.edit',1)}}">Edit User</a>
@@ -153,9 +153,6 @@
                             <li>
                                 <a href="{{route('posts.create')}}">Create Post</a>
                             </li>
-
-                            <li>
-                                <a href="">All Comments</a>
                             </li>
 
                         </ul>
@@ -167,10 +164,11 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Categories<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="">All Categories</a>
+                                <a href="{{route('categories.index')}}">All Categories</a>
                             </li>
-
-
+                            <li>
+                                <a href="{{route('categories.create')}}">Create Category</a>
+                            </li>
 
                         </ul>
                         <!-- /.nav-second-level -->
