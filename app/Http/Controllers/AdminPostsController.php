@@ -105,9 +105,13 @@ class AdminPostsController extends Controller
         if($file=$request->file('photo_id')){
             $name=$file->getClientOriginalName();
             $file->move('images',$name);
-            $photo=Photo::find($post->photo_id);
-            $photo_id=$photo->update(['file_name'=>$name]);
-            $input['photo_id']=$photo->id;
+            if($photo=Photo::find($post->photo_id)){
+                $photo_id=$photo->update(['file_name'=>$name]);
+                $input['photo_id']=$photo->id;
+            }else{
+                $photo=Photo::create(['file_name'=>$name]);
+                $input['photo_id']=$photo->id;
+            }
         }
         $post->update($input);
 
@@ -131,5 +135,12 @@ class AdminPostsController extends Controller
 
         $post->delete();
         return redirect('/admin/posts');
+    }
+
+    public function post ($id){
+        $post=Post::find($id);
+        $categories=Category::all();
+        $comments=$post->comments;
+        return view('post',compact('post','categories','comments'));
     }
 }

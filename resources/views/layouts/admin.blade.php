@@ -153,7 +153,10 @@
                             <li>
                                 <a href="{{route('posts.create')}}">Create Post</a>
                             </li>
+                            <li>
+                                <a href="{{route('comment.index')}}">All Comments</a>
                             </li>
+
 
                         </ul>
                         <!-- /.nav-second-level -->
