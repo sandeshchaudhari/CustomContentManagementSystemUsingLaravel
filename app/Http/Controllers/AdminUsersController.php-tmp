@@ -6,7 +6,7 @@ use App\Http\Requests\UsersRequest;
 use App\Photo;
 use App\Role;
 use App\User;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Session;
 
 class AdminUsersController extends Controller {
@@ -44,7 +44,7 @@ class AdminUsersController extends Controller {
 		if ($file = $request->file('photo_id')) {
 			$name = $file->getClientOriginalName();
 			$file->move('images', $name);
-			$photo = Photo::create(['file_name' => $name]);
+			$photo             = Photo::create(['file_name' => $name]);
 			$input['photo_id'] = $photo->id;
 			//$user->file_name=$name;
 		}
@@ -72,7 +72,7 @@ class AdminUsersController extends Controller {
 	 */
 	public function edit($id) {
 		$roles = Role::pluck('name', 'id')->all();
-		$user = User::find($id);
+		$user  = User::find($id);
 		return view('admin.users.edit', compact('user', 'roles'));
 	}
 
@@ -88,7 +88,7 @@ class AdminUsersController extends Controller {
 		if (trim($request->password) == '') {
 			$input = $request->except('password');
 		} else {
-			$input = $request->all();
+			$input             = $request->all();
 			$input['password'] = bcrypt($request->password);
 		}
 		$user = User::findOrFail($id);
@@ -116,8 +116,8 @@ class AdminUsersController extends Controller {
 	public function destroy($id) {
 		Session::flash('deleted_user', 'User has been deleted successfully');
 		$user = User::findOrFail($id);
-		if (file_exists(public_path() . '/images/' . $user->photo->file_name)) {
-			unlink(public_path() . '/images/' . $user->photo->file_name);
+		if (file_exists(public_path().'/images/'.$user->photo->file_name)) {
+			unlink(public_path().'/images/'.$user->photo->file_name);
 		}
 		$user->delete();
 		return redirect()->back();
