@@ -15,11 +15,11 @@ class Post extends Model {
 	 */
 	public function sluggable() {
 		return [
-			'slug' => [
-				'source' => 'title',
-				'separator' => '-',
+			'slug'            => [
+				'source'         => 'title',
+				'separator'      => '-',
 				'includeTrashed' => true,
-				'onUpdate' => true,
+				'onUpdate'       => true,
 			],
 		];
 	}
